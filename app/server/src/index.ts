@@ -7,9 +7,9 @@ import { errorMiddleware } from './middlewares';
 const app = express();
 
 app.use(express.json());
-app.use(cors({ credentials: true }));
 app.use(cookieParser());
-app.use(router);
+app.use(cors({ credentials: true }));
+app.use('/api', router);
 app.use(errorMiddleware);
 
 const PORT = +(process.env.PORT || 3000);

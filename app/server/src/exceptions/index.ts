@@ -11,7 +11,7 @@ export class ApiException extends Error {
 }
 
 export class BadRequestException extends ApiException {
-   constructor(message: string, errors: ValidationError[] = []) {
-      super(400, message, errors);
+   constructor(errors: ValidationError[] = []) {
+      super(400, 'Bad request', errors);
    }
 }
