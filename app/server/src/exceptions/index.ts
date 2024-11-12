@@ -15,3 +15,9 @@ export class BadRequestException extends ApiException {
       super(400, 'Bad request', errors);
    }
 }
+
+export class ConflictException extends ApiException {
+   constructor(message: string) {
+      super(409, message);
+   }
+}

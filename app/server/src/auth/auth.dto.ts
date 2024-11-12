@@ -8,7 +8,7 @@ export class RegisterDTO {
    password!: string;
 
    @Exclude()
-   repeatedPassword!: string;
+   repeatedPassword?: undefined;
 
    @Expose()
    username?: string;
