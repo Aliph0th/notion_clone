@@ -1,6 +1,6 @@
 import { config, DotenvParseOutput } from 'dotenv';
 import { injectable } from 'inversify';
-import { IConfigService } from '../interfaces/config.interface';
+import { IConfigService } from '../interfaces';
 
 @injectable()
 export class ConfigService implements IConfigService {

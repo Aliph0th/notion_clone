@@ -1,24 +1,27 @@
+import { plainToInstance } from 'class-transformer';
 import { NextFunction, Request, Response } from 'express';
 import { inject } from 'inversify';
 import 'reflect-metadata';
-import { IAUthController, ITokenService } from '../interfaces';
+import { IAUthController, IAuthService } from '../interfaces';
 import { IOC_TYPES } from '../IoC/types';
-import { validationResult } from 'express-validator';
-import { BadRequestException } from '../exceptions';
+import { RegisterDTO } from './auth.dto';
+import { TOKENS } from '../constants';
 
 export class AuthController implements IAUthController {
-   private readonly tokenService: ITokenService;
-   constructor(@inject(IOC_TYPES.TokenService) _tokenService: ITokenService) {
-      this.tokenService = _tokenService;
+   private readonly authService: IAuthService;
+   constructor(@inject(IOC_TYPES.AuthService) authService: IAuthService) {
+      this.authService = authService;
    }
 
-   register = (req: Request, res: Response, next: NextFunction) => {
+   register = async (req: Request, res: Response, next: NextFunction) => {
       try {
-         const errors = validationResult(req);
-         if (!errors.isEmpty()) {
-            throw new BadRequestException(errors.array());
-         }
-         res.status(201).json('ok');
+         const userDTO = plainToInstance(RegisterDTO, req.body as unknown, {
+            excludeExtraneousValues: true,
+            exposeUnsetFields: false
+         });
+         const { tokens, user } = await this.authService.register(userDTO);
+         res.cookie('refreshToken', tokens.refreshToken, { maxAge: TOKENS.REFRESH_EXPIRATION });
+         res.status(201).json({ user, accessToken: tokens.accessToken });
       } catch (error) {
          next(error);
       }

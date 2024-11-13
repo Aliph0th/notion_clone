@@ -1,3 +1,7 @@
+export interface ITokens {
+   accessToken: string;
+   refreshToken: string;
+}
 export interface ITokenService {
-   generate: () => void;
+   generateTokens: (payload: string | Buffer | object) => ITokens;
 }
