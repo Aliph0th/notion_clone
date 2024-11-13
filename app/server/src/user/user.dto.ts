@@ -14,9 +14,9 @@ export class ResponseUserDTO {
    @Expose()
    age?: number;
    @Expose()
-   gravatar_email!: string;
+   gravatarEmail!: string;
    @Expose()
-   registration_date!: Date;
+   registrationDate!: Date;
 
    constructor(partial: Partial<ResponseUserDTO>) {
       Object.assign(this, partial);

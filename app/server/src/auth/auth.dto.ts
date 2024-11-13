@@ -16,7 +16,7 @@ export class RegisterDTO {
 
    @Expose()
    @Transform(({ obj }) => obj.gravatar_email || obj.email)
-   gravatar_email!: string;
+   gravatarEmail!: string;
 
    constructor(partial: Partial<RegisterDTO>) {
       Object.assign(this, partial);

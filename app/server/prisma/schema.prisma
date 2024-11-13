@@ -8,21 +8,31 @@ datasource db {
 }
 
 model User {
-   id                Int      @id @default(autoincrement())
-   email             String   @unique
-   password          String
-   registration_date DateTime @default(now())
-   username          String?
-   age               Int?
-   gravatar_email    String
-   notes             Note[]
+   id               Int      @id @default(autoincrement())
+   email            String   @unique
+   password         String
+   registrationDate DateTime @default(now()) @map("registration_date")
+   username         String?
+   age              Int?
+   gravatarEmail    String   @map("gravatar_email")
+   notes            Note[]
+   tokens           Token[]
 }
 
 model Note {
-   id         Int      @id @default(autoincrement())
-   name       String
-   content    String
-   user       User     @relation(fields: [userID], references: [id])
-   userID     Int
-   created_at DateTime @default(now())
+   id        Int      @id @default(autoincrement())
+   name      String
+   content   String
+   user      User     @relation(fields: [userID], references: [id])
+   userID    Int      @map("user_id")
+   createdAt DateTime @default(now()) @map("created_at")
+}
+
+model Token {
+   id     Int    @id @default(autoincrement())
+   token  String
+   user   User   @relation(fields: [userID], references: [id])
+   userID Int    @map("user_id")
+
+   @@unique([userID, token])
 }

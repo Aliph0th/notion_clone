@@ -7,7 +7,8 @@
       "build": "tsc",
       "start": "node dist/index.js",
       "db:init": "node databaseInit.js && prisma migrate deploy",
-      "db:migrate:dev": "prisma migrate dev --name"
+      "db:migrate:dev": "prisma migrate dev --name",
+      "db:generate": "prisma generate"
    },
    "author": "Aliph0th",
    "devDependencies": {
