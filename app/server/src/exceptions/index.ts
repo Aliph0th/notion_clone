@@ -27,3 +27,9 @@ export class UnauthorizedException extends ApiException {
       super(401, message);
    }
 }
+
+export class NotFoundException extends ApiException {
+   constructor(message = 'Not found') {
+      super(404, message);
+   }
+}
