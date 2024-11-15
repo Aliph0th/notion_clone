@@ -2,12 +2,12 @@ import { plainToInstance } from 'class-transformer';
 import { NextFunction, Request, Response } from 'express';
 import { inject } from 'inversify';
 import 'reflect-metadata';
-import { IAUthController, IAuthService } from '../interfaces';
+import { IAuthController, IAuthService } from '../interfaces';
 import { IOC_TYPES } from '../IoC/types';
 import { LoginDTO, RegisterDTO } from './auth.dto';
 import { TOKENS } from '../constants';
 
-export class AuthController implements IAUthController {
+export class AuthController implements IAuthController {
    private readonly authService: IAuthService;
    constructor(@inject(IOC_TYPES.AuthService) authService: IAuthService) {
       this.authService = authService;
