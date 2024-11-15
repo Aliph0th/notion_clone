@@ -20,7 +20,7 @@ export class AuthController implements IAuthController {
             exposeUnsetFields: false
          });
          const { tokens, user } = await this.authService.register(userDTO);
-         res.cookie('refreshToken', tokens.refreshToken, { maxAge: TOKENS.REFRESH_EXPIRATION * 1000 });
+         res.cookie('refreshToken', tokens.refreshToken, { maxAge: TOKENS.REFRESH_EXPIRATION * 1000, httpOnly: true });
          res.status(201).json({ user, accessToken: tokens.accessToken });
       } catch (error) {
          next(error);
@@ -31,7 +31,7 @@ export class AuthController implements IAuthController {
       try {
          const userDTO = plainToInstance(LoginDTO, req.body as unknown);
          const { tokens, user } = await this.authService.login(userDTO);
-         res.cookie('refreshToken', tokens.refreshToken, { maxAge: TOKENS.REFRESH_EXPIRATION * 1000 });
+         res.cookie('refreshToken', tokens.refreshToken, { maxAge: TOKENS.REFRESH_EXPIRATION * 1000, httpOnly: true });
          res.status(200).json({ user, accessToken: tokens.accessToken });
       } catch (error) {
          next(error);
@@ -41,7 +41,7 @@ export class AuthController implements IAuthController {
    refresh = async (req: Request, res: Response, next: NextFunction) => {
       try {
          const { tokens } = await this.authService.refresh(req.cookies['refreshToken']);
-         res.cookie('refreshToken', tokens.refreshToken, { maxAge: TOKENS.REFRESH_EXPIRATION * 1000 });
+         res.cookie('refreshToken', tokens.refreshToken, { maxAge: TOKENS.REFRESH_EXPIRATION * 1000, httpOnly: true });
          res.status(200).json({ accessToken: tokens.accessToken });
       } catch (error) {
          next(error);
