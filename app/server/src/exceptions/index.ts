@@ -11,13 +11,19 @@ export class ApiException extends Error {
 }
 
 export class BadRequestException extends ApiException {
-   constructor(errors: ValidationError[] = []) {
-      super(400, 'Bad request', errors);
+   constructor({ message = 'Bad request', errors = [] }: { message?: string; errors?: ValidationError[] }) {
+      super(400, message, errors);
    }
 }
 
 export class ConflictException extends ApiException {
-   constructor(message: string) {
+   constructor(message = 'Conflict') {
       super(409, message);
+   }
+}
+
+export class UnauthorizedException extends ApiException {
+   constructor(message = 'Unauthorized') {
+      super(401, message);
    }
 }

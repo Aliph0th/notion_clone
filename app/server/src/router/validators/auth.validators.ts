@@ -26,3 +26,8 @@ export const authRegisterValidators = [
    body('age').optional().isInt({ gt: 0 }).withMessage('Age must be an integer greater than 0'),
    body('gravatar_email').optional().isEmail().withMessage('The gravatar email address must be entered correctly')
 ];
+
+export const authLoginValidators = [
+   body('email').isEmail().withMessage('The email address must be entered correctly'),
+   body('password').isLength({ min: 8 }).withMessage("Password's length must be at least 8 characters")
+];

@@ -22,3 +22,14 @@ export class RegisterDTO {
       Object.assign(this, partial);
    }
 }
+
+export class LoginDTO {
+   @Expose()
+   email!: string;
+   @Expose()
+   password!: string;
+
+   constructor(partial: Partial<RegisterDTO>) {
+      Object.assign(this, partial);
+   }
+}

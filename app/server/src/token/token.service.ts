@@ -2,13 +2,16 @@ import { inject, injectable } from 'inversify';
 import 'reflect-metadata';
 import { IConfigService, ITokenService } from '../interfaces';
 import { IOC_TYPES } from '../IoC/types';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { TOKENS } from '../constants';
+import { PrismaClient, Token } from '@prisma/client';
 
 @injectable()
 export class TokenService implements ITokenService {
    private readonly configService: IConfigService;
+   private readonly client = new PrismaClient();
    constructor(@inject(IOC_TYPES.ConfigService) configService: IConfigService) {
+      this.client.$connect();
       this.configService = configService;
    }
 
@@ -23,19 +26,36 @@ export class TokenService implements ITokenService {
       return { accessToken, refreshToken };
    };
 
-   validateAccessToken(token: string) {
+   validateAccessToken = (token: string) => {
       try {
-         return jwt.verify(token, this.configService.getOrThrow('ACCESS_SECRET'));
+         return jwt.verify(token, this.configService.getOrThrow('ACCESS_SECRET')) as JwtPayload;
       } catch (_) {
          return null;
       }
-   }
+   };
 
-   validateRefreshToken(token: string) {
+   validateRefreshToken = (token: string) => {
       try {
-         return jwt.verify(token, this.configService.getOrThrow('REFRESH_SECRET'));
+         return jwt.verify(token, this.configService.getOrThrow('REFRESH_SECRET')) as JwtPayload;
       } catch (_) {
          return null;
       }
-   }
+   };
+
+   upsert = async (userID: number, token: string) => {
+      return await this.client.token.upsert({
+         select: { token: true },
+         where: { userID_token: { userID, token } },
+         create: { userID, token },
+         update: { userID, token }
+      });
+   };
+
+   findOne = async (where: Partial<Token>) => {
+      return await this.client.token.findFirst({ where });
+   };
+
+   deleteOne = async (id: number) => {
+      return await this.client.token.delete({ where: { id } });
+   };
 }
