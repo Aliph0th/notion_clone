@@ -7,7 +7,7 @@ export const authRegisterValidators = [
       .withMessage("Password's length must be at least 8 characters")
       .bail({ level: 'chain' })
       .custom(value => {
-         if (!/[A-Z]/.test(value) || !/[a-z]/.test(value) || !/\d/.test(value)) {
+         if (![/[A-Z]/, /[a-z]/, /\d/].every(regex => regex.test(value))) {
             throw Error('Password must contain at least one capital letter, lowercase letter and digit');
          }
          return true;

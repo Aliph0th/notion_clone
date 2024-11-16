@@ -15,3 +15,23 @@ export const patchUserValidators = [
       return true;
    })
 ];
+
+export const updatePasswordValidators = [
+   body('currentPassword').isLength({ min: 8 }).withMessage("Password's length must be at least 8 characters"),
+   body('password')
+      .isLength({ min: 8 })
+      .withMessage("Password's length must be at least 8 characters")
+      .bail({ level: 'chain' })
+      .custom(value => {
+         if (![/[A-Z]/, /[a-z]/, /\d/].every(regex => regex.test(value))) {
+            throw Error('Password must contain at least one capital letter, lowercase letter and digit');
+         }
+         return true;
+      }),
+   body('repeatedPassword').custom((value, { req }) => {
+      if (value !== req.body.password) {
+         throw new Error("Passwords don't match");
+      }
+      return true;
+   })
+];

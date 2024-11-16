@@ -35,3 +35,16 @@ export class PatchUserDTO {
       Object.assign(this, partial);
    }
 }
+
+export class UpdatePasswordDTO {
+   @Expose()
+   currentPassword!: string;
+   @Expose()
+   password!: string;
+   @Exclude()
+   repeatedPassword!: string;
+
+   constructor(partial: Partial<UpdatePasswordDTO>) {
+      Object.assign(this, partial);
+   }
+}

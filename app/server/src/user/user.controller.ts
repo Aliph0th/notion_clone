@@ -4,7 +4,7 @@ import { IUserController, IUserService } from '../interfaces';
 import { IOC_TYPES } from '../IoC/types';
 import { NotFoundException } from '../exceptions';
 import { plainToInstance } from 'class-transformer';
-import { PatchUserDTO } from './user.dto';
+import { PatchUserDTO, UpdatePasswordDTO } from './user.dto';
 
 @injectable()
 export class UserController implements IUserController {
@@ -29,6 +29,16 @@ export class UserController implements IUserController {
          const patchDTO = plainToInstance(PatchUserDTO, req.body as unknown, { exposeUnsetFields: false });
          const user = await this.userService.patch(req.userID!, +req.params['userID'], patchDTO);
          res.json(user);
+      } catch (error) {
+         next(error);
+      }
+   };
+
+   updatePassword = async (req: Request, res: Response, next: NextFunction) => {
+      try {
+         const dto = plainToInstance(UpdatePasswordDTO, req.body as unknown);
+         await this.userService.updatePassword(req.userID!, +req.params['userID'], dto);
+         res.sendStatus(200);
       } catch (error) {
          next(error);
       }
