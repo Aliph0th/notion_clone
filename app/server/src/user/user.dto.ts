@@ -22,3 +22,16 @@ export class ResponseUserDTO {
       Object.assign(this, partial);
    }
 }
+
+export class PatchUserDTO {
+   @Expose()
+   username?: string;
+   @Expose()
+   age?: number;
+   @Expose()
+   gravatarEmail?: string;
+
+   constructor(partial: Partial<PatchUserDTO>) {
+      Object.assign(this, partial);
+   }
+}

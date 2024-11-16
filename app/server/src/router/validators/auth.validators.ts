@@ -24,7 +24,7 @@ export const authRegisterValidators = [
       .isLength({ min: 1, max: 20 })
       .withMessage('Username must be a string from 1 to 20 characters long'),
    body('age').optional().isInt({ gt: 0 }).withMessage('Age must be an integer greater than 0'),
-   body('gravatar_email').optional().isEmail().withMessage('The gravatar email address must be entered correctly')
+   body('gravatarEmail').optional().isEmail().withMessage('The gravatar email address must be entered correctly')
 ];
 
 export const authLoginValidators = [

@@ -15,7 +15,7 @@ export class RegisterDTO {
    age?: number;
 
    @Expose()
-   @Transform(({ obj }) => obj.gravatar_email || obj.email)
+   @Transform(({ obj }) => obj.gravatarEmail || obj.email)
    gravatarEmail!: string;
 
    constructor(partial: Partial<RegisterDTO>) {

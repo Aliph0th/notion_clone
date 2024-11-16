@@ -3,6 +3,8 @@ import { inject, injectable } from 'inversify';
 import { IUserController, IUserService } from '../interfaces';
 import { IOC_TYPES } from '../IoC/types';
 import { NotFoundException } from '../exceptions';
+import { plainToInstance } from 'class-transformer';
+import { PatchUserDTO } from './user.dto';
 
 @injectable()
 export class UserController implements IUserController {
@@ -12,11 +14,20 @@ export class UserController implements IUserController {
    }
    getMyself = async (req: Request, res: Response, next: NextFunction) => {
       try {
-         const userID = req.userID!;
-         const user = await this.userService.findOne({ id: userID });
+         const user = await this.userService.findOne({ id: req.userID! });
          if (!user) {
             throw new NotFoundException();
          }
+         res.json(user);
+      } catch (error) {
+         next(error);
+      }
+   };
+
+   patch = async (req: Request, res: Response, next: NextFunction) => {
+      try {
+         const patchDTO = plainToInstance(PatchUserDTO, req.body as unknown, { exposeUnsetFields: false });
+         const user = await this.userService.patch(req.userID!, +req.params['userID'], patchDTO);
          res.json(user);
       } catch (error) {
          next(error);

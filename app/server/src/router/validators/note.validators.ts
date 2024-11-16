@@ -24,7 +24,7 @@ export const notePatchValidators = [
       .withMessage('Content of the note must consist of at least 1 character and be no longer than 256'),
    body().custom((_, { req }) => {
       if (!req.body.name && !req.body.content) {
-         throw new Error('At least one of fields name and content must be provided');
+         throw new Error('At least one of fields name or content must be provided');
       }
       return true;
    })
