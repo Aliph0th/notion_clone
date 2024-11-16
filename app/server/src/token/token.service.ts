@@ -1,10 +1,10 @@
+import { Prisma, PrismaClient } from '@prisma/client';
 import { inject, injectable } from 'inversify';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import 'reflect-metadata';
+import { TOKENS } from '../constants';
 import { IConfigService, ITokenService } from '../interfaces';
 import { IOC_TYPES } from '../IoC/types';
-import jwt, { JwtPayload } from 'jsonwebtoken';
-import { TOKENS } from '../constants';
-import { PrismaClient, Token } from '@prisma/client';
 
 @injectable()
 export class TokenService implements ITokenService {
@@ -45,17 +45,17 @@ export class TokenService implements ITokenService {
    upsert = async (userID: number, token: string) => {
       return await this.client.token.upsert({
          select: { token: true },
-         where: { userID_token: { userID, token } },
+         where: { token },
          create: { userID, token },
          update: { userID, token }
       });
    };
 
-   findOne = async (where: Partial<Token>) => {
+   findOne = async (where: Prisma.TokenWhereInput) => {
       return await this.client.token.findFirst({ where });
    };
 
-   deleteOne = async (id: number) => {
-      return await this.client.token.delete({ where: { id } });
+   deleteOne = async (where: Prisma.TokenWhereUniqueInput) => {
+      return await this.client.token.delete({ where });
    };
 }

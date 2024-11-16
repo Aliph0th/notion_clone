@@ -65,4 +65,11 @@ export class AuthService implements IAuthService {
 
       return { tokens };
    };
+
+   logout = async (token: string) => {
+      if (!token) {
+         throw new BadRequestException({ message: 'No token provided' });
+      }
+      await this.tokenService.deleteOne({ token });
+   };
 }

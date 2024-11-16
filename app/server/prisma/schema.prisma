@@ -31,9 +31,7 @@ model Note {
 
 model Token {
    id     Int    @id @default(autoincrement())
-   token  String
+   token  String @unique
    user   User   @relation(fields: [userID], references: [id])
    userID Int    @map("user_id")
-
-   @@unique([userID, token])
 }

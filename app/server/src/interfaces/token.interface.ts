@@ -1,4 +1,4 @@
-import { Token } from '@prisma/client';
+import { Prisma, Token } from '@prisma/client';
 import { JwtPayload } from 'jsonwebtoken';
 
 export interface ITokens {
@@ -10,6 +10,6 @@ export interface ITokenService {
    validateAccessToken: (token: string) => JwtPayload | null;
    validateRefreshToken: (token: string) => JwtPayload | null;
    upsert: (userID: number, token: string) => Promise<{ token: string }>;
-   findOne: (where: Partial<Token>) => Promise<Token | null>;
-   deleteOne: (id: number) => Promise<Token | null>;
+   findOne: (where: Prisma.TokenWhereInput) => Promise<Token | null>;
+   deleteOne: (where: Prisma.TokenWhereUniqueInput) => Promise<Token | null>;
 }
