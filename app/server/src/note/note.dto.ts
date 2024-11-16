@@ -1,12 +1,12 @@
 import { Expose } from 'class-transformer';
 
-export class CreateNoteDTO {
+export class CreatePatchNoteDTO {
    @Expose()
-   name!: string;
+   name?: string;
    @Expose()
-   content!: string;
+   content?: string;
 
-   constructor(partial: Partial<CreateNoteDTO>) {
+   constructor(partial: Partial<CreatePatchNoteDTO>) {
       Object.assign(this, partial);
    }
 }

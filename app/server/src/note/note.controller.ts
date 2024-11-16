@@ -3,7 +3,7 @@ import { INoteController, INoteService } from '../interfaces';
 import { Request, Response, NextFunction } from 'express';
 import { IOC_TYPES } from '../IoC/types';
 import { plainToInstance } from 'class-transformer';
-import { CreateNoteDTO } from './note.dto';
+import { CreatePatchNoteDTO } from './note.dto';
 
 @injectable()
 export class NoteController implements INoteController {
@@ -13,11 +13,11 @@ export class NoteController implements INoteController {
    }
    create = async (req: Request, res: Response, next: NextFunction) => {
       try {
-         const noteDTO = plainToInstance(CreateNoteDTO, req.body as unknown);
+         const noteDTO = plainToInstance(CreatePatchNoteDTO, req.body as unknown);
          const createdNote = await this.noteService.create({
             user: { connect: { id: req.userID! } },
-            name: noteDTO.name,
-            content: noteDTO.content
+            name: noteDTO.name!,
+            content: noteDTO.content!
          });
          res.status(201).json(createdNote);
       } catch (error) {
@@ -28,6 +28,25 @@ export class NoteController implements INoteController {
    get = async (req: Request, res: Response, next: NextFunction) => {
       try {
          const note = await this.noteService.getByID(req.userID!, +req.params['noteID']);
+         res.status(200).json(note);
+      } catch (error) {
+         next(error);
+      }
+   };
+
+   getAll = async (req: Request, res: Response, next: NextFunction) => {
+      try {
+         const notes = await this.noteService.getAll(req.userID!);
+         res.status(200).json(notes);
+      } catch (error) {
+         next(error);
+      }
+   };
+
+   patch = async (req: Request, res: Response, next: NextFunction) => {
+      try {
+         const patchNoteDTO = plainToInstance(CreatePatchNoteDTO, req.body as unknown, { exposeUnsetFields: false });
+         const note = await this.noteService.patch(req.userID!, +req.params['noteID'], patchNoteDTO);
          res.status(200).json(note);
       } catch (error) {
          next(error);

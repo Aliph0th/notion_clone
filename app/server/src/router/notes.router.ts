@@ -2,7 +2,7 @@ import { Router } from 'express';
 import IOC_CONTAINER from '../IoC';
 import { IOC_TYPES } from '../IoC/types';
 import { INoteController } from '../interfaces';
-import { noteCreateValidators } from './validators';
+import { noteCreateValidators, notePatchValidators } from './validators';
 import { validationResultMiddleware } from '../middlewares';
 
 const notesRouter = Router();
@@ -10,4 +10,7 @@ const noteController = IOC_CONTAINER.get<INoteController>(IOC_TYPES.NoteControll
 
 notesRouter.post('/', ...noteCreateValidators, validationResultMiddleware, noteController.create);
 notesRouter.get('/:noteID', noteController.get);
+notesRouter.get('/', noteController.getAll);
+notesRouter.patch('/:noteID', ...notePatchValidators, validationResultMiddleware, noteController.patch);
+
 export default notesRouter;
