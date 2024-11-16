@@ -26,6 +26,7 @@ model Note {
    user      User     @relation(fields: [userID], references: [id])
    userID    Int      @map("user_id")
    createdAt DateTime @default(now()) @map("created_at")
+   updatedAt DateTime @default(now()) @map("updated_at")
 }
 
 model Token {
