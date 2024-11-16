@@ -33,3 +33,9 @@ export class NotFoundException extends ApiException {
       super(404, message);
    }
 }
+
+export class ForbiddenException extends ApiException {
+   constructor(message = 'Forbidden') {
+      super(403, message);
+   }
+}
