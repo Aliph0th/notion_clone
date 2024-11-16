@@ -7,6 +7,7 @@ export interface INoteController {
    get: (req: Request, res: Response, next: NextFunction) => void;
    getAll: (req: Request, res: Response, next: NextFunction) => void;
    patch: (req: Request, res: Response, next: NextFunction) => void;
+   delete: (req: Request, res: Response, next: NextFunction) => void;
 }
 
 export interface INoteService {
@@ -14,4 +15,5 @@ export interface INoteService {
    getByID: (userID: number, noteID: number) => Promise<Note>;
    getAll: (userID: number) => Promise<Note[]>;
    patch: (userID: number, noteID: number, update: CreatePatchNoteDTO) => Promise<Note>;
+   delete: (userID: number, noteID: number) => Promise<Note>;
 }

@@ -51,4 +51,18 @@ export class NoteService implements INoteService {
       }
       return await this.client.note.update({ where: { id: noteID, userID }, data: update });
    };
+
+   delete = async (userID: number, noteID: number) => {
+      if (!noteID) {
+         throw new BadRequestException({ message: 'Invalid note id' });
+      }
+      const candidate = await this.client.note.findFirst({ where: { id: noteID }, select: { userID: true } });
+      if (!candidate) {
+         throw new NotFoundException();
+      }
+      if (candidate.userID !== userID) {
+         throw new ForbiddenException();
+      }
+      return await this.client.note.delete({ where: { id: noteID, userID } });
+   };
 }

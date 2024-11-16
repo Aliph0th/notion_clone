@@ -52,4 +52,13 @@ export class NoteController implements INoteController {
          next(error);
       }
    };
+
+   delete = async (req: Request, res: Response, next: NextFunction) => {
+      try {
+         const deletedNote = await this.noteService.delete(req.userID!, +req.params['noteID']);
+         res.status(200).json(deletedNote);
+      } catch (error) {
+         next(error);
+      }
+   };
 }

@@ -12,5 +12,6 @@ notesRouter.post('/', ...noteCreateValidators, validationResultMiddleware, noteC
 notesRouter.get('/:noteID', noteController.get);
 notesRouter.get('/', noteController.getAll);
 notesRouter.patch('/:noteID', ...notePatchValidators, validationResultMiddleware, noteController.patch);
+notesRouter.delete('/:noteID', noteController.delete);
 
 export default notesRouter;
