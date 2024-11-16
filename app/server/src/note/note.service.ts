@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import { injectable } from 'inversify';
-import { BadRequestException, ForbiddenException, NotFoundException } from '../exceptions';
+import { ForbiddenException, NotFoundException } from '../exceptions';
 import { INoteService } from '../interfaces';
 import { CreatePatchNoteDTO } from './note.dto';
 
@@ -15,9 +15,6 @@ export class NoteService implements INoteService {
    };
 
    getByID = async (userID: number, noteID: number) => {
-      if (!noteID) {
-         throw new BadRequestException({ message: 'Invalid note id' });
-      }
       const note = await this.client.note.findFirst({ where: { id: noteID } });
       if (!note) {
          throw new NotFoundException();
@@ -39,9 +36,6 @@ export class NoteService implements INoteService {
    };
 
    patch = async (userID: number, noteID: number, update: CreatePatchNoteDTO) => {
-      if (!noteID) {
-         throw new BadRequestException({ message: 'Invalid note id' });
-      }
       const candidate = await this.client.note.findFirst({ where: { id: noteID }, select: { userID: true } });
       if (!candidate) {
          throw new NotFoundException();
@@ -53,9 +47,6 @@ export class NoteService implements INoteService {
    };
 
    delete = async (userID: number, noteID: number) => {
-      if (!noteID) {
-         throw new BadRequestException({ message: 'Invalid note id' });
-      }
       const candidate = await this.client.note.findFirst({ where: { id: noteID }, select: { userID: true } });
       if (!candidate) {
          throw new NotFoundException();
