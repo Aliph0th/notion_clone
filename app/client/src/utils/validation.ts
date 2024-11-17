@@ -37,3 +37,14 @@ export const registrationSchema = z
       message: "Passwords don't match",
       path: ['repeatedPassword']
    });
+
+export const loginSchema = z.object({
+   email: z.string().email('Invalid email'),
+   password: z
+      .string()
+      .min(8, "Password's length must be at least 8 characters")
+      .refine(
+         value => [/[A-Z]/, /[a-z]/, /\d/].every(regex => regex.test(value)),
+         'Password must contain at least one capital letter, lowercase letter and digit'
+      )
+});

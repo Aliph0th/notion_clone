@@ -5,6 +5,7 @@ import Wrapper from './pages/wrapper';
 import Error from './pages/Error';
 import AuthWrapper from './pages/auth/AuthWrapper';
 import SignUp from './pages/auth/SignUp';
+import Login from './pages/auth/Login';
 
 const router = createBrowserRouter(
    [
@@ -35,6 +36,17 @@ const router = createBrowserRouter(
                      path: 'signup',
                      handle: {
                         crumb: () => 'Sign up'
+                     }
+                  },
+                  {
+                     element: (
+                        <AuthWrapper to="/">
+                           <Login />
+                        </AuthWrapper>
+                     ),
+                     path: 'login',
+                     handle: {
+                        crumb: () => 'Log in'
                      }
                   },
                   {

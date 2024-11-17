@@ -19,13 +19,13 @@ export type UserContextType = {
 
 export type RegistrationForm = {
    email: string;
-   password?: string;
+   password: string;
    repeatedPassword?: string;
    username?: string;
    age?: number;
    gravatarEmail?: string;
 };
-
+export type LoginForm = Pick<RegistrationForm, 'email' | 'password'>;
 export type ErrorToast = { message: string; id: number };
 export type ApiError = { message: string; errors: unknown[] };
 

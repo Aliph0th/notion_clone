@@ -13,10 +13,6 @@ export const HEADER_LINKS = {
       {
          title: 'Home',
          path: '/'
-      },
-      {
-         title: 'Users',
-         path: '/users'
       }
    ]
 };
