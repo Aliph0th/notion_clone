@@ -1,7 +1,7 @@
 import { NavLink, useMatches } from 'react-router-dom';
-import arrowSvg from '../../assets/arrow.svg';
-import homeSvg from '../../assets/home.svg';
-import { BreadcrumbMatch } from '../../types';
+import arrowSvg from '../assets/arrow.svg';
+import homeSvg from '../assets/home.svg';
+import { BreadcrumbMatch } from '../types';
 
 const Breadcrumbs = () => {
    const matches = useMatches() as BreadcrumbMatch[];

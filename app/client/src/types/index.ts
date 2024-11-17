@@ -16,3 +16,12 @@ export type UserContextType = {
    user?: User;
    setUser: Dispatch<SetStateAction<User>>;
 };
+
+export type RegistrationForm = {
+   email: string;
+   password?: string;
+   repeatedPassword?: string;
+   username?: string;
+   age?: number;
+   gravatarEmail?: string;
+};

@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Breadcrumbs from '../../components/ui/Breadcrumbs';
+import Breadcrumbs from '../../ui/Breadcrumbs';
 
 const Wrapper = () => {
    return (
