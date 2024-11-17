@@ -17,7 +17,6 @@ export default [
    ...tseslint.configs.recommended,
    {
       ignores: ['dist'],
-      rules: { 'no-unused-vars': ['warn'] }
    },
    {
       files: ['**/*.{ts,tsx}'],
@@ -44,7 +43,8 @@ export default [
                varsIgnorePattern: '^_',
                caughtErrorsIgnorePattern: '^_'
             }
-         ]
+         ],
+         '@typescript-eslint/no-unused-vars': ['warn']
       }
    }
 ];

@@ -17,16 +17,21 @@ export const registrationSchema = z
             value => [/[A-Z]/, /[a-z]/, /\d/].every(regex => regex.test(value)),
             'Password must contain at least one capital letter, lowercase letter and digit'
          ),
-      age: z.coerce.number().int().min(1, 'Age must be greater than 0').nullable().optional(),
-      username: z
-         .string()
-         .refine(
-            value => value.length >= 1 && value.length <= 20,
-            'Username must be a string from 1 to 20 characters long'
-         )
-         .nullable()
-         .optional(),
-      gravatarEmail: z.string().email('Invalid email').nullable().optional()
+      age: z.preprocess(
+         value => (value ? value : undefined),
+         z.coerce.number().int().min(1, 'Age must be greater than 0').optional()
+      ),
+      username: z.preprocess(
+         value => (value ? value : undefined),
+         z
+            .string()
+            .refine(
+               value => value.length >= 1 && value.length <= 20,
+               'Username must be a string from 1 to 20 characters long'
+            )
+            .optional()
+      ),
+      gravatarEmail: z.preprocess(value => (value ? value : undefined), z.string().email('Invalid email').optional())
    })
    .refine(data => data.password === data.repeatedPassword, {
       message: "Passwords don't match",

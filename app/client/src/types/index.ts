@@ -25,3 +25,6 @@ export type RegistrationForm = {
    age?: number;
    gravatarEmail?: string;
 };
+
+export type ErrorToast = { message: string; id: number };
+export type ApiError = { message: string; errors: unknown[] };

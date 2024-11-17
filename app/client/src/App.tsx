@@ -28,7 +28,10 @@ const router = createBrowserRouter(
                   },
                   {
                      element: <SignUp />,
-                     path: 'signup'
+                     path: 'signup',
+                     handle: {
+                        crumb: () => 'Sign up'
+                     }
                   },
                   {
                      path: '*',
