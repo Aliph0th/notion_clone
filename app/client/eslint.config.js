@@ -10,10 +10,15 @@ export default [
    js.configs.recommended,
    prettierRecommended,
    {
-      rules: { 'prettier/prettier': 'warn' }
+      rules: {
+         'prettier/prettier': 'warn'
+      }
    },
    ...tseslint.configs.recommended,
-   { ignores: ['dist'] },
+   {
+      ignores: ['dist'],
+      rules: { 'no-unused-vars': ['warn'] }
+   },
    {
       files: ['**/*.{ts,tsx}'],
       languageOptions: {
@@ -31,7 +36,15 @@ export default [
          ...react.configs.recommended.rules,
          ...react.configs['jsx-runtime'].rules,
          ...reactHooks.configs.recommended.rules,
-         'react-refresh/only-export-components': ['warn', { allowConstantExport: true }]
+         'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+         'no-unused-vars': [
+            'warn',
+            {
+               argsIgnorePattern: '^_',
+               varsIgnorePattern: '^_',
+               caughtErrorsIgnorePattern: '^_'
+            }
+         ]
       }
    }
 ];
