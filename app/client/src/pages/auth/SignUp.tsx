@@ -7,8 +7,9 @@ import { useMutation } from '@tanstack/react-query';
 import { REQUESTS } from '../../api';
 import Loader from '../../ui/Loader';
 import Toast from '../../ui/Toast';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { AxiosError } from 'axios';
+import { UserContext } from '../../context/contexts';
 
 const SignUp = () => {
    const {
@@ -26,13 +27,18 @@ const SignUp = () => {
    });
 
    const [errorToasts, setErrorToasts] = useState<ErrorToast[]>([]);
+   const { setUser } = useContext(UserContext);
    const mutation = useMutation({
       mutationFn: REQUESTS.Register,
       onError: (error: AxiosError<ApiError>) =>
          setErrorToasts([
             ...errorToasts,
             { message: error.response?.data?.message || 'Something went wrong', id: Date.now() }
-         ])
+         ]),
+      onSuccess: data => {
+         localStorage.setItem('token', data.accessToken);
+         setUser(data.user);
+      }
    });
 
    const onToastClose = (id: number) => {
@@ -64,6 +70,7 @@ const SignUp = () => {
                      error={errors?.password?.message}
                      label="Password"
                      required
+                     hint="Password must contain at least one capital letter, lowercase letter and digit and be 8 characters long at least"
                   />
                   <FormInput
                      id="repeatedPassword"
@@ -73,6 +80,9 @@ const SignUp = () => {
                      label="Repeat password"
                      required
                   />
+                  <span className="text-gray-500 text-sm">
+                     <span className="text-orange-600">*</span> is required
+                  </span>
                </div>
                <div>
                   <FormInput
@@ -103,6 +113,7 @@ const SignUp = () => {
                         </>
                      }
                      placeholder="example@gmail.com"
+                     hint="By default will be used your email as email for gravatar"
                   />
                </div>
 

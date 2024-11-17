@@ -28,3 +28,8 @@ export type RegistrationForm = {
 
 export type ErrorToast = { message: string; id: number };
 export type ApiError = { message: string; errors: unknown[] };
+
+export type AuthSuccessResult = {
+   accessToken: string;
+   user: User;
+};

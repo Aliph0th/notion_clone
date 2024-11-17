@@ -3,7 +3,7 @@ import Main from './pages/Main';
 import NotFound from './pages/NotFound';
 import Wrapper from './pages/wrapper';
 import Error from './pages/Error';
-import Protected from './pages/auth/Protected';
+import AuthWrapper from './pages/auth/AuthWrapper';
 import SignUp from './pages/auth/SignUp';
 
 const router = createBrowserRouter(
@@ -20,14 +20,18 @@ const router = createBrowserRouter(
                children: [
                   {
                      element: (
-                        <Protected>
+                        <AuthWrapper isAuthRequired to="/login">
                            <Main />
-                        </Protected>
+                        </AuthWrapper>
                      ),
                      index: true
                   },
                   {
-                     element: <SignUp />,
+                     element: (
+                        <AuthWrapper to="/">
+                           <SignUp />
+                        </AuthWrapper>
+                     ),
                      path: 'signup',
                      handle: {
                         crumb: () => 'Sign up'

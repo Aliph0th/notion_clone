@@ -6,6 +6,7 @@ type FormInputProps = {
    register: UseFormRegisterReturn;
    error?: string;
    label?: string | ReactNode;
+   hint?: string | ReactNode;
    placeholder?: string;
    required?: boolean;
 } & InputHTMLAttributes<HTMLInputElement>;
@@ -18,7 +19,8 @@ const FormInput: FC<FormInputProps> = ({
    register,
    error,
    label,
-   placeholder
+   placeholder,
+   hint
 }) => {
    return (
       <div className="mb-4">
@@ -38,6 +40,7 @@ const FormInput: FC<FormInputProps> = ({
             className={`w-full p-2 focus:ring focus:ring-blue-200 outline-none border rounded ${error ? 'border-red-500' : 'border-gray-300'}`}
          />
          {error && <p className="text-red-500 text-sm">{error}</p>}
+         {hint && <span className="text-gray-400 text-sm">{hint}</span>}
       </div>
    );
 };
