@@ -15,6 +15,7 @@ export type User = {
 export type UserContextType = {
    user?: User;
    setUser: Dispatch<SetStateAction<User>>;
+   isPending: boolean;
 };
 
 export type RegistrationForm = {

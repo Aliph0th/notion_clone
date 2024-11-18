@@ -113,7 +113,7 @@ const SignUp = () => {
                         </>
                      }
                      placeholder="example@gmail.com"
-                     hint="By default will be used your email as email for gravatar"
+                     hint="Your email will be used as email for gravatar by default"
                   />
                </div>
 
