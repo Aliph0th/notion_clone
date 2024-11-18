@@ -1,3 +1,4 @@
+export const DEFAULT_AVATAR = 'https://raw.githubusercontent.com/mmf-web/react-features/refs/heads/main/pedro.gif';
 export const HEADER_LINKS = {
    Unauthenticated: [
       {
@@ -13,6 +14,10 @@ export const HEADER_LINKS = {
       {
          title: 'Home',
          path: '/'
+      },
+      {
+         title: 'Settings',
+         path: '/settings'
       }
    ]
 };
