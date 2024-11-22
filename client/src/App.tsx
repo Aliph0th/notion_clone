@@ -65,37 +65,42 @@ const router = createBrowserRouter(
                      }
                   },
                   {
-                     element: (
-                        <AuthWrapper isAuthRequired to="/login">
-                           <NoteList />
-                        </AuthWrapper>
-                     ),
                      path: 'notes',
                      handle: {
                         crumb: () => 'Notes'
-                     }
-                  },
-                  {
-                     element: (
-                        <AuthWrapper isAuthRequired to="/login">
-                           <UpsertNote />
-                        </AuthWrapper>
-                     ),
-                     path: 'notes/create',
-                     handle: {
-                        crumb: () => 'Create a new note'
-                     }
-                  },
-                  {
-                     element: (
-                        <AuthWrapper isAuthRequired to="/login">
-                           <Note />
-                        </AuthWrapper>
-                     ),
-                     path: 'notes/:noteID',
-                     handle: {
-                        crumb: (params: Record<string, string>) => `Note #${params.noteID}`
-                     }
+                     },
+                     children: [
+                        {
+                           element: (
+                              <AuthWrapper isAuthRequired to="/login">
+                                 <NoteList />
+                              </AuthWrapper>
+                           ),
+                           index: true
+                        },
+                        {
+                           element: (
+                              <AuthWrapper isAuthRequired to="/login">
+                                 <UpsertNote />
+                              </AuthWrapper>
+                           ),
+                           path: 'create',
+                           handle: {
+                              crumb: () => 'Create a new note'
+                           }
+                        },
+                        {
+                           element: (
+                              <AuthWrapper isAuthRequired to="/login">
+                                 <Note />
+                              </AuthWrapper>
+                           ),
+                           path: ':noteID',
+                           handle: {
+                              crumb: (params: Record<string, string>) => `Note #${params.noteID}`
+                           }
+                        }
+                     ]
                   },
                   {
                      path: '*',

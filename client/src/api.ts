@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import {
    AuthSuccessResult,
    ChangeInfoForm,
@@ -65,6 +65,17 @@ export const REQUESTS = {
    GetAllNotes: async (userID: number) => {
       const response = await API.get<Note[]>(`/notes/${userID}`);
       return response.data;
+   },
+   GetNote: async (userID: number, noteID: number) => {
+      try {
+         const response = await API.get<Note>(`/notes/${userID}/${noteID}`);
+         return response.data;
+      } catch (error) {
+         if ((error as AxiosError)?.status === 404) {
+            return null;
+         }
+         throw error;
+      }
    },
    CreateNote: async (data: NoteForm) => {
       const response = await API.post<Note>('/notes', data);

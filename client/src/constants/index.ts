@@ -27,5 +27,6 @@ export const HEADER_LINKS = {
 };
 
 export const QUERY_KEYS = {
-   NOTES: 'notes'
+   NOTES: 'notes',
+   NOTE: 'note'
 };
