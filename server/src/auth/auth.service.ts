@@ -60,8 +60,8 @@ export class AuthService implements IAuthService {
          throw new UnauthorizedException();
       }
 
-      const tokens = this.tokenService.generateTokens({ id: databaseToken.id });
-      await this.tokenService.upsert(databaseToken.id, tokens.refreshToken);
+      const tokens = this.tokenService.generateTokens({ id: databaseToken.userID });
+      await this.tokenService.upsert(databaseToken.userID, tokens.refreshToken);
 
       return { tokens };
    };

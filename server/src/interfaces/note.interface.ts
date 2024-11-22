@@ -4,8 +4,8 @@ import { Note, Prisma } from '@prisma/client';
 
 export interface INoteController {
    create: (req: Request, res: Response, next: NextFunction) => void;
-   get: (req: Request, res: Response, next: NextFunction) => void;
-   getAll: (req: Request, res: Response, next: NextFunction) => void;
+   getForUser: (req: Request, res: Response, next: NextFunction) => void;
+   getAllForUser: (req: Request, res: Response, next: NextFunction) => void;
    patch: (req: Request, res: Response, next: NextFunction) => void;
    delete: (req: Request, res: Response, next: NextFunction) => void;
 }

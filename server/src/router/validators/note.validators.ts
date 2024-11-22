@@ -8,7 +8,7 @@ export const noteCreateValidators = [
    body('content')
       .trim()
       .isLength({ min: 1, max: 1000 })
-      .withMessage('Content of the note must consist of at least 1 character and be no longer than 256')
+      .withMessage('Content of the note must consist of at least 1 character and be no longer than 1000')
 ];
 
 export const notePatchValidators = [
@@ -21,7 +21,7 @@ export const notePatchValidators = [
       .optional()
       .trim()
       .isLength({ min: 1, max: 1000 })
-      .withMessage('Content of the note must consist of at least 1 character and be no longer than 256'),
+      .withMessage('Content of the note must consist of at least 1 character and be no longer than 1000'),
    body().custom((_, { req }) => {
       if (!req.body.name && !req.body.content) {
          throw new Error('At least one of fields name or content must be provided');

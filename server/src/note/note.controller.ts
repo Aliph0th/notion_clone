@@ -25,18 +25,18 @@ export class NoteController implements INoteController {
       }
    };
 
-   get = async (req: Request, res: Response, next: NextFunction) => {
+   getForUser = async (req: Request, res: Response, next: NextFunction) => {
       try {
-         const note = await this.noteService.getByID(req.userID!, +req.params['noteID']);
+         const note = await this.noteService.getByID(+req.params['userID']!, +req.params['noteID']);
          res.status(200).json(note);
       } catch (error) {
          next(error);
       }
    };
 
-   getAll = async (req: Request, res: Response, next: NextFunction) => {
+   getAllForUser = async (req: Request, res: Response, next: NextFunction) => {
       try {
-         const notes = await this.noteService.getAll(req.userID!);
+         const notes = await this.noteService.getAll(+req.params['userID']!);
          res.status(200).json(notes);
       } catch (error) {
          next(error);
