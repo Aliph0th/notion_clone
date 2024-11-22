@@ -47,7 +47,7 @@ export class TokenService implements ITokenService {
          select: { token: true },
          where: { token },
          create: { userID, token },
-         update: { userID, token }
+         update: { token }
       });
    };
 

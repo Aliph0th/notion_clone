@@ -4,7 +4,7 @@ const Footer = () => {
          <span className="text-gray-500">
             Notion clone <span className="text-gray-400 text-sm">(created by me)</span>
          </span>
-         <span>BSU: 2030</span>
+         <span>BSU: 2024</span>
       </footer>
    );
 };
