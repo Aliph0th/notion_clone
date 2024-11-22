@@ -3,6 +3,7 @@ import { User as UserType } from '../types';
 import SHA256 from 'crypto-js/sha256';
 import { DEFAULT_AVATAR } from '../constants';
 import arrow from '../assets/arrow.svg';
+import { NavLink } from 'react-router-dom';
 
 interface IUserProps {
    user: UserType;
@@ -10,6 +11,7 @@ interface IUserProps {
 
 const User: FC<IUserProps> = ({ user }) => {
    const [dropped, setDropped] = useState(false);
+   const [isLoading, setIsLoading] = useState(true);
    const dropdownListRef = useRef(null);
    const avatarUrl = useMemo(() => {
       const hash = SHA256(user.gravatarEmail.trim().toLowerCase()).toString();
@@ -27,6 +29,8 @@ const User: FC<IUserProps> = ({ user }) => {
       [dropped]
    );
 
+   const avatarLoadHandler = () => setIsLoading(false);
+
    useEffect(() => {
       document.addEventListener('mousedown', closeMenuHandler);
       return () => document.removeEventListener('mousedown', closeMenuHandler);
@@ -34,9 +38,19 @@ const User: FC<IUserProps> = ({ user }) => {
 
    return (
       <div className="relative" ref={dropdownListRef}>
-         <div className="flex items-center select-none gap-x-1" onClick={handleClick}>
-            <img src={avatarUrl} className="rounded-full w-10" alt="gravatar" />
-            <img src={arrow} className={`${dropped ? 'rotate-180' : ''} w-5 transition-transform`} alt="arrow" />
+         <div className="flex items-center select-none gap-x-2" onClick={handleClick}>
+            {isLoading && <div className="w-10 rounded-full bg-gray-200 h-10"></div>}
+            <img
+               src={avatarUrl}
+               className={`${isLoading ? 'hidden' : ''} rounded-full w-10`}
+               onLoad={avatarLoadHandler}
+               alt="gravatar"
+            />
+            <img
+               src={arrow}
+               className={`${dropped ? '-rotate-90' : 'rotate-90'} w-2 transition-transform`}
+               alt="arrow"
+            />
          </div>
 
          <div
@@ -49,9 +63,9 @@ const User: FC<IUserProps> = ({ user }) => {
             </div>
             <ul className="py-2 text-sm text-gray-700">
                <li>
-                  <a href="#" className="block px-4 py-2 hover:bg-gray-100">
+                  <NavLink to="/settings" onClick={handleClick} className="block px-4 py-2 hover:bg-gray-100">
                      Settings
-                  </a>
+                  </NavLink>
                </li>
             </ul>
             <div className="py-2">

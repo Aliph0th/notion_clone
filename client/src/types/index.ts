@@ -27,8 +27,14 @@ export type RegistrationForm = {
    gravatarEmail?: string;
 };
 export type LoginForm = Pick<RegistrationForm, 'email' | 'password'>;
+export type ChangeInfoForm = Pick<RegistrationForm, 'username' | 'age' | 'gravatarEmail'>;
+export type ChangePasswordForm = Pick<Required<RegistrationForm>, 'password' | 'repeatedPassword'> & {
+   currentPassword: string;
+};
+
 export type ErrorToast = { message: string; id: number };
 export type ApiError = { message: string; errors: unknown[] };
+export type SettingsResult = { type: 'success' | 'error'; message: string };
 
 export type AuthSuccessResult = {
    accessToken: string;

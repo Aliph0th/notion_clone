@@ -6,6 +6,7 @@ import Error from './pages/Error';
 import AuthWrapper from './pages/auth/AuthWrapper';
 import SignUp from './pages/auth/SignUp';
 import Login from './pages/auth/Login';
+import Settings from './pages/settings/Settings';
 
 const router = createBrowserRouter(
    [
@@ -47,6 +48,17 @@ const router = createBrowserRouter(
                      path: 'login',
                      handle: {
                         crumb: () => 'Log in'
+                     }
+                  },
+                  {
+                     element: (
+                        <AuthWrapper isAuthRequired to="/login">
+                           <Settings />
+                        </AuthWrapper>
+                     ),
+                     path: 'settings',
+                     handle: {
+                        crumb: () => 'Settings'
                      }
                   },
                   {
