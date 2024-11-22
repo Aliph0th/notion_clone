@@ -1,11 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
-import { useContext } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useContext, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { REQUESTS } from '../../api';
 import { QUERY_KEYS } from '../../constants';
 import { UserContext } from '../../context/contexts';
 import Loader from '../../ui/Loader';
 import { formatDateShort } from '../../utils';
+import Toast from '../../ui/Toast';
+import { ApiError, ErrorToast } from '../../types';
+import { AxiosError } from 'axios';
 
 const NoteList = () => {
    const { user } = useContext(UserContext);
@@ -15,6 +18,29 @@ const NoteList = () => {
       enabled: !!user.id,
       staleTime: 6e4
    });
+
+   const [errorToasts, setErrorToasts] = useState<ErrorToast[]>([]);
+   const queryClient = useQueryClient();
+   const mutation = useMutation({
+      mutationFn: REQUESTS.DeleteNote,
+      onError: (error: AxiosError<ApiError>) =>
+         setErrorToasts([
+            ...errorToasts,
+            { message: error.response?.data?.message || 'Something went wrong', id: Date.now() }
+         ]),
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.NOTES] });
+      }
+   });
+
+   const onToastClose = (id: number) => {
+      setErrorToasts(errorToasts.filter(toast => toast.id !== id));
+   };
+
+   const onDeleteNote = (noteID: number) => {
+      mutation.mutate({ noteID });
+   };
+
    return (
       <div className="mt-3">
          <h1 className="mb-1 text-4xl font-bold">Your notes</h1>
@@ -46,14 +72,21 @@ const NoteList = () => {
                               <NavLink to={`${note.id}/edit`} className="p-1 hover:bg-gray-300 rounded">
                                  ✍️
                               </NavLink>
-                              <NavLink to={`${note.id}/edit`} className="p-1 hover:bg-gray-300 rounded">
+                              <button onClick={() => onDeleteNote(note.id)} className="p-1 hover:bg-gray-300 rounded">
                                  🗑
-                              </NavLink>
+                              </button>
                            </div>
                         </div>
                      ))}
                   </>
                )}
+            </div>
+         )}
+         {errorToasts.length > 0 && (
+            <div className="absolute bottom-10 right-6 flex flex-col gap-y-1">
+               {errorToasts.map(toast => (
+                  <Toast key={toast.id} onClick={() => onToastClose(toast.id)} message={toast.message} />
+               ))}
             </div>
          )}
       </div>

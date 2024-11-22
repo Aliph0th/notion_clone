@@ -84,5 +84,9 @@ export const REQUESTS = {
    PatchNote: async ({ noteID, data }: { noteID: number; data: NoteForm }) => {
       const response = await API.patch<Note>(`/notes/${noteID}`, data);
       return response.data;
+   },
+   DeleteNote: async ({ noteID }: { noteID: number }) => {
+      const response = await API.delete<Note>(`/notes/${noteID}`);
+      return response.data;
    }
 };
