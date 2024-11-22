@@ -45,7 +45,7 @@ const Login = () => {
    };
 
    const onSubmit = (data: LoginForm) => {
-      mutation.mutate(data);
+      mutation.mutate({ data });
    };
    return (
       <div className="flex items-center justify-center h-full">

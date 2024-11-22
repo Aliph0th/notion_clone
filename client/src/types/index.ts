@@ -1,5 +1,8 @@
+import { MutationFunction } from '@tanstack/react-query';
 import { Dispatch, ReactNode, SetStateAction } from 'react';
+import { DefaultValues } from 'react-hook-form';
 import { UIMatch } from 'react-router-dom';
+import { z } from 'zod';
 
 export type BreadcrumbMatch = UIMatch<unknown, { crumb?: (_: unknown) => ReactNode }>;
 
@@ -52,4 +55,13 @@ export type SettingsResult = { type: 'success' | 'error'; message: string };
 export type AuthSuccessResult = {
    accessToken: string;
    user: User;
+};
+
+export type AppFormHookParams<T, K> = {
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   mutationFn: MutationFunction<K, any>;
+   onSuccess?: (_: K) => void;
+   defaultValues: DefaultValues<T>;
+   schema: z.Schema<unknown, unknown>;
+   mutateDataIDs?: { userID?: number; noteID?: number };
 };

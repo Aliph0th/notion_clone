@@ -12,8 +12,9 @@ const Note = () => {
    const { user } = useContext(UserContext);
    const { data, isLoading } = useQuery({
       queryKey: [QUERY_KEYS.NOTE, noteID],
-      queryFn: () => REQUESTS.GetNote(user.id, +noteID),
-      enabled: !!noteID && !!user
+      queryFn: () => REQUESTS.GetNote({ userID: user.id, noteID: +noteID }),
+      enabled: !!noteID && !!user,
+      staleTime: 6e4
    });
    if (isLoading) {
       return <Loader />;

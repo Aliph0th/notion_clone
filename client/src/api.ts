@@ -43,11 +43,11 @@ API.interceptors.response.use(null, async error => {
 });
 
 export const REQUESTS = {
-   Register: async (data: RegistrationForm) => {
+   Register: async ({ data }: { data: RegistrationForm }) => {
       const response = await API.post<AuthSuccessResult>('/auth/register', data);
       return response.data;
    },
-   Login: async (data: LoginForm) => {
+   Login: async ({ data }: { data: LoginForm }) => {
       const response = await API.post<AuthSuccessResult>('/auth/login', data);
       return response.data;
    },
@@ -55,18 +55,18 @@ export const REQUESTS = {
       const response = await API.get<User>('/users/myself');
       return response.data;
    },
-   ChangePassword: async ({ id, data }: { id: number; data: ChangePasswordForm }) => {
-      await API.patch(`/users/${id}/password`, data);
+   ChangePassword: async ({ userID, data }: { userID: number; data: ChangePasswordForm }) => {
+      await API.patch(`/users/${userID}/password`, data);
    },
-   PatchUser: async ({ id, data }: { id: number; data: ChangeInfoForm }) => {
-      const response = await API.patch(`/users/${id}`, data);
+   PatchUser: async ({ userID, data }: { userID: number; data: ChangeInfoForm }) => {
+      const response = await API.patch(`/users/${userID}`, data);
       return response.data;
    },
-   GetAllNotes: async (userID: number) => {
+   GetAllNotes: async ({ userID }: { userID: number }) => {
       const response = await API.get<Note[]>(`/notes/${userID}`);
       return response.data;
    },
-   GetNote: async (userID: number, noteID: number) => {
+   GetNote: async ({ userID, noteID }: { userID: number; noteID: number }) => {
       try {
          const response = await API.get<Note>(`/notes/${userID}/${noteID}`);
          return response.data;
@@ -77,8 +77,12 @@ export const REQUESTS = {
          throw error;
       }
    },
-   CreateNote: async (data: NoteForm) => {
+   CreateNote: async ({ data }: { data: NoteForm }) => {
       const response = await API.post<Note>('/notes', data);
+      return response.data;
+   },
+   PatchNote: async ({ noteID, data }: { noteID: number; data: NoteForm }) => {
+      const response = await API.patch<Note>(`/notes/${noteID}`, data);
       return response.data;
    }
 };

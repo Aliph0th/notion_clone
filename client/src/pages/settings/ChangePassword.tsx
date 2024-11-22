@@ -11,10 +11,10 @@ import Loader from '../../ui/Loader';
 import ChangesResult from '../../ui/ChangesResult';
 
 interface IChangePasswordProps {
-   id: number;
+   userID: number;
 }
 
-const ChangePassword: FC<IChangePasswordProps> = ({ id }) => {
+const ChangePassword: FC<IChangePasswordProps> = ({ userID }) => {
    const {
       register,
       handleSubmit,
@@ -44,7 +44,7 @@ const ChangePassword: FC<IChangePasswordProps> = ({ id }) => {
    });
 
    const onSubmit = (data: ChangePasswordForm) => {
-      mutation.mutate({ id, data });
+      mutation.mutate({ userID, data });
    };
 
    return (

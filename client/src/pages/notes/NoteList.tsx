@@ -11,7 +11,7 @@ const NoteList = () => {
    const { user } = useContext(UserContext);
    const { data, isLoading } = useQuery({
       queryKey: [QUERY_KEYS.NOTES],
-      queryFn: () => REQUESTS.GetAllNotes(user.id),
+      queryFn: () => REQUESTS.GetAllNotes({ userID: user.id }),
       enabled: !!user.id,
       staleTime: 6e4
    });
@@ -43,8 +43,12 @@ const NoteList = () => {
 
                            <div className="flex items-center justify-between gap-1 px-4">
                               <span className="text-gray-500">{formatDateShort(new Date(note.createdAt))}</span>
-                              <button className="p-1 hover:bg-gray-300 rounded">✍️</button>
-                              <button className="p-1 hover:bg-gray-300 rounded">🗑</button>
+                              <NavLink to={`${note.id}/edit`} className="p-1 hover:bg-gray-300 rounded">
+                                 ✍️
+                              </NavLink>
+                              <NavLink to={`${note.id}/edit`} className="p-1 hover:bg-gray-300 rounded">
+                                 🗑
+                              </NavLink>
                            </div>
                         </div>
                      ))}

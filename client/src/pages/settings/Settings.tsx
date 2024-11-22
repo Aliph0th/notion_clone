@@ -9,7 +9,7 @@ const Settings = () => {
       <div className="flex justify-evenly">
          <GeneralSettings user={user} />
 
-         <ChangePassword id={user.id} />
+         <ChangePassword userID={user.id} />
       </div>
    );
 };

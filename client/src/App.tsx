@@ -90,15 +90,31 @@ const router = createBrowserRouter(
                            }
                         },
                         {
-                           element: (
-                              <AuthWrapper isAuthRequired to="/login">
-                                 <Note />
-                              </AuthWrapper>
-                           ),
                            path: ':noteID',
                            handle: {
                               crumb: (params: Record<string, string>) => `Note #${params.noteID}`
-                           }
+                           },
+                           children: [
+                              {
+                                 element: (
+                                    <AuthWrapper isAuthRequired to="/login">
+                                       <Note />
+                                    </AuthWrapper>
+                                 ),
+                                 index: true
+                              },
+                              {
+                                 element: (
+                                    <AuthWrapper isAuthRequired to="/login">
+                                       <UpsertNote />
+                                    </AuthWrapper>
+                                 ),
+                                 path: 'edit',
+                                 handle: {
+                                    crumb: () => 'Edit'
+                                 }
+                              }
+                           ]
                         }
                      ]
                   },

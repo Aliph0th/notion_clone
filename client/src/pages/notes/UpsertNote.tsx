@@ -1,58 +1,50 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { ApiError, ErrorToast, NoteForm } from '../../types';
-import FormInput from '../../ui/FormInput';
-import { noteSchema } from '../../utils';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import { useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useContext } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { REQUESTS } from '../../api';
-import Toast from '../../ui/Toast';
-import { useNavigate } from 'react-router-dom';
-import Loader from '../../ui/Loader';
 import { QUERY_KEYS } from '../../constants';
+import { UserContext } from '../../context/contexts';
+import { useAppForm } from '../../hooks';
+import { Note, NoteForm } from '../../types';
+import FormInput from '../../ui/FormInput';
+import Loader from '../../ui/Loader';
+import Toast from '../../ui/Toast';
+import { noteSchema } from '../../utils';
 
 const UpsertNote = () => {
-   const {
-      register,
-      handleSubmit,
-      formState: { errors, isDirty }
-   } = useForm<NoteForm>({
-      resolver: zodResolver(noteSchema),
-      defaultValues: {
-         name: '',
-         content: ''
-      },
-      reValidateMode: 'onChange'
-   });
-
-   const [errorToasts, setErrorToasts] = useState<ErrorToast[]>([]);
-   const onToastClose = (id: number) => {
-      setErrorToasts(errorToasts.filter(toast => toast.id !== id));
-   };
+   const { noteID } = useParams();
+   const { user } = useContext(UserContext);
    const navigate = useNavigate();
    const queryClient = useQueryClient();
-   const mutation = useMutation({
-      mutationFn: REQUESTS.CreateNote,
-      onError: (error: AxiosError<ApiError>) =>
-         setErrorToasts([
-            ...errorToasts,
-            { message: error.response?.data?.message || 'Something went wrong', id: Date.now() }
-         ]),
-      onSuccess: data => {
-         navigate(`/notes/${data.id}`, { replace: true });
-         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.NOTES] });
-      }
+   const { data, isLoading } = useQuery({
+      queryKey: [QUERY_KEYS.NOTE, noteID],
+      queryFn: () => REQUESTS.GetNote({ userID: user.id, noteID: +noteID! }),
+      enabled: !!noteID && !!user,
+      staleTime: 6e4
    });
 
-   const onSubmit = (data: NoteForm) => {
-      mutation.mutate(data);
-   };
+   const { onSubmit, register, errors, errorToasts, isDirty, onToastClose, isPending } = useAppForm<NoteForm, Note>({
+      schema: noteSchema,
+      defaultValues: { content: data?.content || '', name: data?.name || '' },
+      mutationFn: REQUESTS[noteID ? 'PatchNote' : 'CreateNote'],
+      onSuccess: (data: Note) => {
+         navigate(`/notes/${data.id}`, { replace: true });
+         if (noteID) {
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.NOTE, noteID] });
+         }
+         queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.NOTES] });
+      },
+      mutateDataIDs: { noteID: +noteID }
+   });
+
+   if (isLoading) {
+      return <Loader />;
+   }
 
    return (
       <div className="h-full flex items-center flex-col">
-         <h1 className="text-4xl font-bold mt-4">Create a new note</h1>
-         <form className="mt-10 w-9/12" onSubmit={handleSubmit(onSubmit)}>
+         <h1 className="text-4xl font-bold mt-4">{data ? 'Edit note' : 'Create a new note'}</h1>
+         <form className="mt-10 w-9/12" onSubmit={onSubmit}>
             <FormInput
                id="name"
                register={register('name')}
@@ -79,11 +71,11 @@ const UpsertNote = () => {
             </div>
             <button
                type="submit"
-               disabled={mutation.isPending || !isDirty}
+               disabled={isPending || !isDirty}
                className="flex items-center justify-center gap-x-2 w-60 bg-blue-500 text-white p-2 rounded disabled:bg-gray-300 hover:bg-blue-700"
             >
                Save note
-               {mutation.isPending && <Loader sm />}
+               {isPending && <Loader sm />}
             </button>
          </form>
          {errorToasts.length > 0 && (

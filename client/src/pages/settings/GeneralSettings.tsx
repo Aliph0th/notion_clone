@@ -43,7 +43,7 @@ const GeneralSettings: FC<IGeneralSettingsProps> = ({ user }) => {
    });
 
    const onSubmit = (data: ChangeInfoForm) => {
-      mutation.mutate({ id: user.id, data });
+      mutation.mutate({ userID: user.id, data });
    };
 
    return (
