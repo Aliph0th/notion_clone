@@ -1,17 +1,17 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useContext, useState } from 'react';
+import { AxiosError } from 'axios';
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { REQUESTS } from '../../api';
 import { QUERY_KEYS } from '../../constants';
-import { UserContext } from '../../context/contexts';
-import Loader from '../../ui/Loader';
-import { formatDateShort } from '../../utils';
-import Toast from '../../ui/Toast';
+import { useUser } from '../../hooks';
 import { ApiError, ErrorToast } from '../../types';
-import { AxiosError } from 'axios';
+import Loader from '../../ui/Loader';
+import Toast from '../../ui/Toast';
+import { formatDateShort } from '../../utils';
 
 const NoteList = () => {
-   const { user } = useContext(UserContext);
+   const { user } = useUser();
    const { data, isLoading } = useQuery({
       queryKey: [QUERY_KEYS.NOTES],
       queryFn: () => REQUESTS.GetAllNotes({ userID: user.id }),

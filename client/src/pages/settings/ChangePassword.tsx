@@ -85,7 +85,7 @@ const ChangePassword: FC<IChangePasswordProps> = ({ userID }) => {
                disabled={!isDirty || mutation.isPending}
                className="flex items-center justify-center gap-x-2 bg-blue-500 text-white p-2 rounded disabled:bg-gray-300 hover:bg-blue-700"
             >
-               Save changes
+               Save password
                {mutation.isPending && <Loader sm />}
             </button>
          </form>

@@ -1,11 +1,10 @@
 import { NavLink } from 'react-router-dom';
 import { HEADER_LINKS } from '../../../constants';
-import { useContext } from 'react';
-import { UserContext } from '../../../context/contexts';
+import { useUser } from '../../../hooks';
 import User from '../../../ui/User';
 
 const Header = () => {
-   const { user } = useContext(UserContext);
+   const { user } = useUser();
    return (
       <header>
          <nav className="bg-white border-gray-200">

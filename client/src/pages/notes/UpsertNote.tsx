@@ -1,10 +1,8 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useContext } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { REQUESTS } from '../../api';
 import { QUERY_KEYS } from '../../constants';
-import { UserContext } from '../../context/contexts';
-import { useAppForm } from '../../hooks';
+import { useAppForm, useUser } from '../../hooks';
 import { Note, NoteForm } from '../../types';
 import FormInput from '../../ui/FormInput';
 import Loader from '../../ui/Loader';
@@ -13,7 +11,7 @@ import { noteSchema } from '../../utils';
 
 const UpsertNote = () => {
    const { noteID } = useParams();
-   const { user } = useContext(UserContext);
+   const { user } = useUser();
    const navigate = useNavigate();
    const queryClient = useQueryClient();
    const { data, isLoading } = useQuery({

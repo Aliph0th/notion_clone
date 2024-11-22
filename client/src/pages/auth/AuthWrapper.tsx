@@ -1,6 +1,6 @@
-import { FC, ReactNode, useContext } from 'react';
+import { FC, ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
-import { UserContext } from '../../context/contexts';
+import { useUser } from '../../hooks';
 import Loader from '../../ui/Loader';
 
 interface IAuthWrapperProps {
@@ -10,9 +10,9 @@ interface IAuthWrapperProps {
 }
 
 const AuthWrapper: FC<IAuthWrapperProps> = ({ children, to, isAuthRequired = false }) => {
-   const { user, isPending } = useContext(UserContext);
+   const { user, isLoading } = useUser();
 
-   if (isPending) {
+   if (isLoading) {
       return <Loader />;
    }
 

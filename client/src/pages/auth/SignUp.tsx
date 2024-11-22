@@ -1,15 +1,15 @@
-import { useForm } from 'react-hook-form';
-import { registrationSchema } from '../../utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import FormInput from '../../ui/FormInput';
-import { ApiError, ErrorToast, RegistrationForm } from '../../types';
 import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { REQUESTS } from '../../api';
+import { useUser } from '../../hooks';
+import { ApiError, ErrorToast, RegistrationForm } from '../../types';
+import FormInput from '../../ui/FormInput';
 import Loader from '../../ui/Loader';
 import Toast from '../../ui/Toast';
-import { useContext, useState } from 'react';
-import { AxiosError } from 'axios';
-import { UserContext } from '../../context/contexts';
+import { registrationSchema } from '../../utils';
 
 const SignUp = () => {
    const {
@@ -27,7 +27,7 @@ const SignUp = () => {
    });
 
    const [errorToasts, setErrorToasts] = useState<ErrorToast[]>([]);
-   const { setUser } = useContext(UserContext);
+   const { setUser } = useUser();
    const mutation = useMutation({
       mutationFn: REQUESTS.Register,
       onError: (error: AxiosError<ApiError>) =>

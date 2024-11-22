@@ -1,15 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import { QUERY_KEYS } from '../../constants';
 import { REQUESTS } from '../../api';
-import { useContext } from 'react';
-import { UserContext } from '../../context/contexts';
+import { QUERY_KEYS } from '../../constants';
+import { useUser } from '../../hooks';
 import Loader from '../../ui/Loader';
 import { formatDate } from '../../utils';
 
 const Note = () => {
    const { noteID } = useParams();
-   const { user } = useContext(UserContext);
+   const { user } = useUser();
    const { data, isLoading } = useQuery({
       queryKey: [QUERY_KEYS.NOTE, noteID],
       queryFn: () => REQUESTS.GetNote({ userID: user.id, noteID: +noteID }),

@@ -1,5 +1,5 @@
 import { MutationFunction } from '@tanstack/react-query';
-import { Dispatch, ReactNode, SetStateAction } from 'react';
+import { ReactNode } from 'react';
 import { DefaultValues } from 'react-hook-form';
 import { UIMatch } from 'react-router-dom';
 import { z } from 'zod';
@@ -22,12 +22,6 @@ export type Note = {
    userID: number;
    createdAt: Date;
    updatedAt: Date;
-};
-
-export type UserContextType = {
-   user?: User;
-   setUser: Dispatch<SetStateAction<User>>;
-   isPending: boolean;
 };
 
 export type RegistrationForm = {

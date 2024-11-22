@@ -8,6 +8,7 @@ import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { REQUESTS } from '../../api';
 import ChangesResult from '../../ui/ChangesResult';
+import { useUser } from '../../hooks';
 
 interface IGeneralSettingsProps {
    user: User;
@@ -29,13 +30,14 @@ const GeneralSettings: FC<IGeneralSettingsProps> = ({ user }) => {
    });
 
    const [result, setResult] = useState<SettingsResult | null>(null);
-
+   const { invalidateUser } = useUser();
    const handleHideResult = () => setResult(null);
 
    const mutation = useMutation({
       mutationFn: REQUESTS.PatchUser,
       onSuccess: () => {
          setResult({ type: 'success', message: 'Changes saved successfully' });
+         invalidateUser();
       },
       onError: (error: AxiosError<ApiError>) => {
          setResult({ type: 'error', message: error.response?.data?.message || 'Something went wrong' });
