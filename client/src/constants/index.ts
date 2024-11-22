@@ -16,8 +16,16 @@ export const HEADER_LINKS = {
          path: '/'
       },
       {
+         title: 'Notes',
+         path: '/notes'
+      },
+      {
          title: 'Settings',
          path: '/settings'
       }
    ]
+};
+
+export const QUERY_KEYS = {
+   NOTES: 'notes'
 };

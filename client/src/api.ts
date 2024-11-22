@@ -1,5 +1,14 @@
 import axios from 'axios';
-import { AuthSuccessResult, ChangeInfoForm, ChangePasswordForm, LoginForm, RegistrationForm, User } from './types';
+import {
+   AuthSuccessResult,
+   ChangeInfoForm,
+   ChangePasswordForm,
+   LoginForm,
+   Note,
+   NoteForm,
+   RegistrationForm,
+   User
+} from './types';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 
@@ -51,6 +60,14 @@ export const REQUESTS = {
    },
    PatchUser: async ({ id, data }: { id: number; data: ChangeInfoForm }) => {
       const response = await API.patch(`/users/${id}`, data);
+      return response.data;
+   },
+   GetAllNotes: async (userID: number) => {
+      const response = await API.get<Note[]>(`/notes/${userID}`);
+      return response.data;
+   },
+   CreateNote: async (data: NoteForm) => {
+      const response = await API.post<Note>('/notes', data);
       return response.data;
    }
 };

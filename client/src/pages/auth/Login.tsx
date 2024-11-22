@@ -51,7 +51,7 @@ const Login = () => {
       <div className="flex items-center justify-center h-full">
          <div className="p-6 rounded-lg shadow border border-gray-500/30 w-7/12">
             <h2 className="text-xl font-bold mb-4">Log in</h2>
-            <form className="" onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)}>
                <FormInput
                   id="email"
                   register={register('email')}

@@ -12,6 +12,15 @@ export type User = {
    registrationDate: Date;
 };
 
+export type Note = {
+   id: number;
+   name: string;
+   content: string;
+   userID: number;
+   createdAt: Date;
+   updatedAt: Date;
+};
+
 export type UserContextType = {
    user?: User;
    setUser: Dispatch<SetStateAction<User>>;
@@ -30,6 +39,10 @@ export type LoginForm = Pick<RegistrationForm, 'email' | 'password'>;
 export type ChangeInfoForm = Pick<RegistrationForm, 'username' | 'age' | 'gravatarEmail'>;
 export type ChangePasswordForm = Pick<Required<RegistrationForm>, 'password' | 'repeatedPassword'> & {
    currentPassword: string;
+};
+export type NoteForm = {
+   name: string;
+   content: string;
 };
 
 export type ErrorToast = { message: string; id: number };

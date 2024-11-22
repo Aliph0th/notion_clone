@@ -7,6 +7,9 @@ import AuthWrapper from './pages/auth/AuthWrapper';
 import SignUp from './pages/auth/SignUp';
 import Login from './pages/auth/Login';
 import Settings from './pages/settings/Settings';
+import NoteList from './pages/notes/NoteList';
+import UpsertNote from './pages/notes/UpsertNote';
+import Note from './pages/notes/Note';
 
 const router = createBrowserRouter(
    [
@@ -59,6 +62,39 @@ const router = createBrowserRouter(
                      path: 'settings',
                      handle: {
                         crumb: () => 'Settings'
+                     }
+                  },
+                  {
+                     element: (
+                        <AuthWrapper isAuthRequired to="/login">
+                           <NoteList />
+                        </AuthWrapper>
+                     ),
+                     path: 'notes',
+                     handle: {
+                        crumb: () => 'Notes'
+                     }
+                  },
+                  {
+                     element: (
+                        <AuthWrapper isAuthRequired to="/login">
+                           <UpsertNote />
+                        </AuthWrapper>
+                     ),
+                     path: 'notes/create',
+                     handle: {
+                        crumb: () => 'Create a new note'
+                     }
+                  },
+                  {
+                     element: (
+                        <AuthWrapper isAuthRequired to="/login">
+                           <Note />
+                        </AuthWrapper>
+                     ),
+                     path: 'notes/:noteID',
+                     handle: {
+                        crumb: (params: Record<string, string>) => `Note #${params.noteID}`
                      }
                   },
                   {

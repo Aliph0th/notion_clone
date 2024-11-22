@@ -71,3 +71,18 @@ export const generalInfoSchema = z.object({
    ),
    gravatarEmail: z.preprocess(value => (value ? value : undefined), z.string().email('Invalid email').optional())
 });
+
+export const noteSchema = z.object({
+   name: z
+      .string()
+      .refine(
+         value => value.length >= 1 && value.length <= 256,
+         'Name of the note must consist of at least 1 character and be no longer than 256'
+      ),
+   content: z
+      .string()
+      .refine(
+         value => value.length >= 1 && value.length <= 1000,
+         'Content of the note must consist of at least 1 character and be no longer than 1000'
+      )
+});
