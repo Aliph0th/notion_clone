@@ -1,4 +1,5 @@
 import { MutationFunction } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { ReactNode } from 'react';
 import { DefaultValues } from 'react-hook-form';
 import { UIMatch } from 'react-router-dom';
@@ -55,6 +56,7 @@ export type AppFormHookParams<T, K> = {
    // eslint-disable-next-line @typescript-eslint/no-explicit-any
    mutationFn: MutationFunction<K, any>;
    onSuccess?: (_: K) => void;
+   onError?: (_: AxiosError<ApiError>) => void;
    defaultValues: DefaultValues<T>;
    schema: z.Schema<unknown, unknown>;
    mutateDataIDs?: { userID?: number; noteID?: number };

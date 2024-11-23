@@ -1,56 +1,42 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { ApiError, ChangePasswordForm, SettingsResult } from '../../types';
-import FormInput from '../../ui/FormInput';
-import { changePasswordSchema } from '../../utils';
-import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { REQUESTS } from '../../api';
 import { FC, useState } from 'react';
-import Loader from '../../ui/Loader';
+import { REQUESTS } from '../../api';
+import { useAppForm } from '../../hooks';
+import { ApiError, ChangePasswordForm, SettingsResult } from '../../types';
 import ChangesResult from '../../ui/ChangesResult';
+import FormInput from '../../ui/FormInput';
+import Loader from '../../ui/Loader';
+import { changePasswordSchema } from '../../utils';
 
 interface IChangePasswordProps {
    userID: number;
 }
 
 const ChangePassword: FC<IChangePasswordProps> = ({ userID }) => {
-   const {
-      register,
-      handleSubmit,
-      formState: { errors, isDirty }
-   } = useForm<ChangePasswordForm>({
-      resolver: zodResolver(changePasswordSchema),
+   const { onSubmit, register, errors, isDirty, isPending } = useAppForm<ChangePasswordForm>({
       defaultValues: {
          currentPassword: '',
          password: '',
          repeatedPassword: ''
       },
-      reValidateMode: 'onChange'
-   });
-
-   const [result, setResult] = useState<SettingsResult | null>(null);
-
-   const handleHideResult = () => setResult(null);
-
-   const mutation = useMutation({
       mutationFn: REQUESTS.ChangePassword,
+      schema: changePasswordSchema,
       onSuccess: () => {
          setResult({ type: 'success', message: 'Password changed successfully' });
       },
       onError: (error: AxiosError<ApiError>) => {
          setResult({ type: 'error', message: error.response?.data?.message || 'Something went wrong' });
-      }
+      },
+      mutateDataIDs: { userID }
    });
 
-   const onSubmit = (data: ChangePasswordForm) => {
-      mutation.mutate({ userID, data });
-   };
+   const [result, setResult] = useState<SettingsResult | null>(null);
+   const handleHideResult = () => setResult(null);
 
    return (
       <div className="p-6 rounded-lg shadow border border-gray-500/30 w-4/12 h-fit">
          <h2 className="text-xl font-bold mb-4">Change password</h2>
-         <form onSubmit={handleSubmit(onSubmit)}>
+         <form onSubmit={onSubmit}>
             <FormInput
                id="currentPassword"
                type="password"
@@ -82,11 +68,11 @@ const ChangePassword: FC<IChangePasswordProps> = ({ userID }) => {
 
             <button
                type="submit"
-               disabled={!isDirty || mutation.isPending}
+               disabled={!isDirty || isPending}
                className="flex items-center justify-center gap-x-2 bg-blue-500 text-white p-2 rounded disabled:bg-gray-300 hover:bg-blue-700"
             >
                Save password
-               {mutation.isPending && <Loader sm />}
+               {isPending && <Loader sm />}
             </button>
          </form>
          <ChangesResult result={result} onHideClick={handleHideResult} />
