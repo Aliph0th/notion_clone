@@ -1,58 +1,28 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
-import { AxiosError } from 'axios';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { REQUESTS } from '../../api';
-import { useUser } from '../../hooks';
-import { ApiError, ErrorToast, RegistrationForm } from '../../types';
+import { useAppForm, useUser } from '../../hooks';
+import { AuthSuccessResult, RegistrationForm } from '../../types';
 import FormInput from '../../ui/FormInput';
 import Loader from '../../ui/Loader';
-import Toast from '../../ui/Toast';
 import { registrationSchema } from '../../utils';
 
 const SignUp = () => {
-   const {
-      register,
-      handleSubmit,
-      formState: { errors, isDirty }
-   } = useForm<RegistrationForm>({
-      resolver: zodResolver(registrationSchema),
-      defaultValues: {
-         email: '',
-         password: '',
-         repeatedPassword: ''
-      },
-      reValidateMode: 'onChange'
-   });
-
-   const [errorToasts, setErrorToasts] = useState<ErrorToast[]>([]);
    const { setUser } = useUser();
-   const mutation = useMutation({
+
+   const { onSubmit, register, errors, isDirty, isPending } = useAppForm<RegistrationForm, AuthSuccessResult>({
+      schema: registrationSchema,
       mutationFn: REQUESTS.Register,
-      onError: (error: AxiosError<ApiError>) =>
-         setErrorToasts([
-            ...errorToasts,
-            { message: error.response?.data?.message || 'Something went wrong', id: Date.now() }
-         ]),
-      onSuccess: data => {
+      defaultValues: { email: '', password: '' },
+      onSuccess: (data: AuthSuccessResult) => {
          localStorage.setItem('token', data.accessToken);
          setUser(data.user);
       }
    });
 
-   const onToastClose = (id: number) => {
-      setErrorToasts(errorToasts.filter(toast => toast.id !== id));
-   };
-
-   const onSubmit = (data: RegistrationForm) => {
-      mutation.mutate({ data });
-   };
    return (
       <div className="flex items-center justify-center h-full">
          <div className="p-6 rounded-lg shadow border border-gray-500/30 w-9/12">
             <h2 className="text-xl font-bold mb-4">Sign up</h2>
-            <form className="grid gap-x-4 grid-cols-2 grid-rows-[1fr_auto]" onSubmit={handleSubmit(onSubmit)}>
+            <form className="grid gap-x-4 grid-cols-2 grid-rows-[1fr_auto]" onSubmit={onSubmit}>
                <div>
                   <FormInput
                      id="email"
@@ -119,21 +89,14 @@ const SignUp = () => {
 
                <button
                   type="submit"
-                  disabled={mutation.isPending || !isDirty}
+                  disabled={isPending || !isDirty}
                   className="flex items-center justify-center gap-x-2 col-start-2 bg-blue-500 text-white p-2 rounded disabled:bg-gray-300 hover:bg-blue-700"
                >
                   Sign Up
-                  {mutation.isPending && <Loader sm />}
+                  {isPending && <Loader sm />}
                </button>
             </form>
          </div>
-         {errorToasts.length > 0 && (
-            <div className="absolute bottom-10 right-6 flex flex-col gap-y-1">
-               {errorToasts.map(toast => (
-                  <Toast key={toast.id} onClick={() => onToastClose(toast.id)} message={toast.message} />
-               ))}
-            </div>
-         )}
       </div>
    );
 };

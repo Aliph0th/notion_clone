@@ -1,9 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { ApiError, AppFormHookParams, ErrorToast } from '../types';
+import { ApiError, AppFormHookParams } from '../types';
+import { useContext } from 'react';
+import { ErrorContext } from '../context';
 
 export const useAppForm = <T, K>({
    onSuccess,
@@ -21,19 +22,11 @@ export const useAppForm = <T, K>({
       defaultValues,
       reValidateMode: 'onChange'
    });
-
-   const [errorToasts, setErrorToasts] = useState<ErrorToast[]>([]);
-   const onToastClose = (id: number) => {
-      setErrorToasts(errorToasts.filter(toast => toast.id !== id));
-   };
+   const { pushToast } = useContext(ErrorContext);
 
    const mutation = useMutation({
       mutationFn,
-      onError: (error: AxiosError<ApiError>) =>
-         setErrorToasts([
-            ...errorToasts,
-            { message: error.response?.data?.message || 'Something went wrong', id: Date.now() }
-         ]),
+      onError: (error: AxiosError<ApiError>) => pushToast(error?.response?.data?.message),
       onSuccess
    });
 
@@ -41,5 +34,5 @@ export const useAppForm = <T, K>({
       mutation.mutate({ ...dataIDs, data });
    });
 
-   return { onSubmit, errorToasts, onToastClose, register, errors, isDirty, isPending: mutation.isPending };
+   return { onSubmit, register, errors, isDirty, isPending: mutation.isPending };
 };

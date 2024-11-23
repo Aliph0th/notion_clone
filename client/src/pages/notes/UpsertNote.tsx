@@ -6,7 +6,6 @@ import { useAppForm, useUser } from '../../hooks';
 import { Note, NoteForm } from '../../types';
 import FormInput from '../../ui/FormInput';
 import Loader from '../../ui/Loader';
-import Toast from '../../ui/Toast';
 import { noteSchema } from '../../utils';
 
 const UpsertNote = () => {
@@ -21,7 +20,7 @@ const UpsertNote = () => {
       staleTime: 6e4
    });
 
-   const { onSubmit, register, errors, errorToasts, isDirty, onToastClose, isPending } = useAppForm<NoteForm, Note>({
+   const { onSubmit, register, errors, isDirty, isPending } = useAppForm<NoteForm, Note>({
       schema: noteSchema,
       defaultValues: { content: data?.content || '', name: data?.name || '' },
       mutationFn: REQUESTS[noteID ? 'PatchNote' : 'CreateNote'],
@@ -76,13 +75,6 @@ const UpsertNote = () => {
                {isPending && <Loader sm />}
             </button>
          </form>
-         {errorToasts.length > 0 && (
-            <div className="absolute bottom-10 right-6 flex flex-col gap-y-1">
-               {errorToasts.map(toast => (
-                  <Toast key={toast.id} onClick={() => onToastClose(toast.id)} message={toast.message} />
-               ))}
-            </div>
-         )}
       </div>
    );
 };
