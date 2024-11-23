@@ -48,7 +48,7 @@ const NoteList = () => {
             to="/notes/create"
             className="py-2 px-3 mb-3 inline-block rounded-lg text-white hover:bg-blue-800 bg-blue-700"
          >
-            Create new Note
+            Create new note
          </NavLink>
          {isLoading ? (
             <Loader />
