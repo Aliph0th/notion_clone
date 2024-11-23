@@ -42,10 +42,10 @@ export class TokenService implements ITokenService {
       }
    };
 
-   upsert = async (userID: number, token: string) => {
+   upsert = async (userID: number, token: string, oldToken?: string) => {
       return await this.client.token.upsert({
          select: { token: true },
-         where: { token },
+         where: { token: oldToken ? oldToken : token },
          create: { userID, token },
          update: { token }
       });

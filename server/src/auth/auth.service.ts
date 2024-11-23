@@ -61,7 +61,7 @@ export class AuthService implements IAuthService {
       }
 
       const tokens = this.tokenService.generateTokens({ id: databaseToken.userID });
-      await this.tokenService.upsert(databaseToken.userID, tokens.refreshToken);
+      await this.tokenService.upsert(databaseToken.userID, tokens.refreshToken, databaseToken.token);
 
       return { tokens };
    };
