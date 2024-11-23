@@ -12,10 +12,6 @@ export const HEADER_LINKS = {
    ],
    Authenticated: [
       {
-         title: 'Home',
-         path: '/'
-      },
-      {
          title: 'Notes',
          path: '/notes'
       },

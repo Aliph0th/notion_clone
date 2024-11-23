@@ -1,15 +1,14 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Main from './pages/Main';
-import NotFound from './pages/NotFound';
-import Wrapper from './pages/wrapper';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import Error from './pages/Error';
+import NotFound from './pages/NotFound';
 import AuthWrapper from './pages/auth/AuthWrapper';
-import SignUp from './pages/auth/SignUp';
 import Login from './pages/auth/Login';
-import Settings from './pages/settings/Settings';
+import SignUp from './pages/auth/SignUp';
+import Note from './pages/notes/Note';
 import NoteList from './pages/notes/NoteList';
 import UpsertNote from './pages/notes/UpsertNote';
-import Note from './pages/notes/Note';
+import Settings from './pages/settings/Settings';
+import Wrapper from './pages/wrapper';
 
 const router = createBrowserRouter(
    [
@@ -26,7 +25,7 @@ const router = createBrowserRouter(
                   {
                      element: (
                         <AuthWrapper isAuthRequired to="/login">
-                           <Main />
+                           <Navigate to="/notes" replace />
                         </AuthWrapper>
                      ),
                      index: true
