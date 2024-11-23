@@ -3,7 +3,12 @@
 const fs = require('fs');
 const path = require('path');
 
-const dbPath = path.join(__dirname, 'database.db');
+const dbPath = path.join(__dirname, 'db', 'database.db');
+
+if (!fs.existsSync(path.dirname(dbPath))) {
+   fs.mkdirSync(path.dirname(dbPath));
+   console.log('./db was created');
+}
 
 if (!fs.existsSync(dbPath)) {
    fs.writeFileSync(dbPath, '', 'utf8');

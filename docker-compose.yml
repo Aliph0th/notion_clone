@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+   notion_backend:
+      restart: unless-stopped
+      build:
+         context: ./server
+         dockerfile: ./Dockerfile
+      volumes:
+         - sqlite-data:/app/db
+      ports:
+         - '3000:3000'
+
+   notion_frontend:
+      restart: unless-stopped
+      build:
+         context: ./client
+         dockerfile: ./Dockerfile
+      ports:
+         - '5173:5173'
+      depends_on:
+         - notion_backend
+
+volumes:
+   sqlite-data:
