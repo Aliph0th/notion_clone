@@ -51,9 +51,16 @@ export const REQUESTS = {
       const response = await API.post<AuthSuccessResult>('/auth/login', data);
       return response.data;
    },
+   Logout: async () => {
+      await API.post('/auth/logout');
+   },
    GetMyself: async () => {
-      const response = await API.get<User>('/users/myself');
-      return response.data;
+      try {
+         const response = await API.get<User>('/users/myself');
+         return response.data;
+      } catch (_) {
+         return null;
+      }
    },
    ChangePassword: async ({ userID, data }: { userID: number; data: ChangePasswordForm }) => {
       await API.patch(`/users/${userID}/password`, data);

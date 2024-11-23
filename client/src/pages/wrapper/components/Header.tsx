@@ -25,7 +25,7 @@ const Header = () => {
                      </li>
                   ))}
                </ul>
-               {user && <User user={user} />}
+               {user && <User />}
             </div>
          </nav>
       </header>

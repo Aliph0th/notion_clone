@@ -1,15 +1,14 @@
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { User as UserType } from '../types';
+import { useMutation } from '@tanstack/react-query';
 import SHA256 from 'crypto-js/sha256';
-import { DEFAULT_AVATAR } from '../constants';
-import arrow from '../assets/arrow.svg';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { REQUESTS } from '../api';
+import arrow from '../assets/arrow.svg';
+import { DEFAULT_AVATAR } from '../constants';
+import { useUser } from '../hooks';
 
-interface IUserProps {
-   user: UserType;
-}
-
-const User: FC<IUserProps> = ({ user }) => {
+const User = () => {
+   const { user, invalidateUser } = useUser();
    const [dropped, setDropped] = useState(false);
    const [isLoading, setIsLoading] = useState(true);
    const dropdownListRef = useRef(null);
@@ -35,6 +34,18 @@ const User: FC<IUserProps> = ({ user }) => {
       document.addEventListener('mousedown', closeMenuHandler);
       return () => document.removeEventListener('mousedown', closeMenuHandler);
    }, [closeMenuHandler]);
+
+   const mutation = useMutation({
+      mutationFn: REQUESTS.Logout,
+      onSuccess: () => {
+         localStorage.removeItem('token');
+         invalidateUser();
+      }
+   });
+
+   const onLogoutClick = () => {
+      mutation.mutate();
+   };
 
    return (
       <div className="relative" ref={dropdownListRef}>
@@ -69,9 +80,12 @@ const User: FC<IUserProps> = ({ user }) => {
                </li>
             </ul>
             <div className="py-2">
-               <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-red-600 hover:text-white">
+               <button
+                  onClick={onLogoutClick}
+                  className="w-full px-4 py-2 text-sm text-gray-700 hover:bg-red-600 hover:text-white"
+               >
                   Sign out
-               </a>
+               </button>
             </div>
          </div>
       </div>
