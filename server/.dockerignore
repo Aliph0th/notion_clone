@@ -18,4 +18,5 @@ logs
 .DS_Store
 Thumbs.db
 
-database.db
+*.db
+*.db-journal
