@@ -43,5 +43,6 @@ This project uses following tech stack:
       REFRESH_SECRET=<your secret for refresh token>
       ORIGIN=<url to frontend>
       ```
+   *or you can use example env files provided in repo*
 
 3. Run project using npm (before that, manually install all dependencies in both folders and run `npm run db:init` in the server folder) **OR** using docker-compose: `docker compose up -d`
