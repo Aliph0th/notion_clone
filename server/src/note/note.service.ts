@@ -43,7 +43,10 @@ export class NoteService implements INoteService {
       if (candidate.userID !== userID) {
          throw new ForbiddenException();
       }
-      return await this.client.note.update({ where: { id: noteID, userID }, data: update });
+      return await this.client.note.update({
+         where: { id: noteID, userID },
+         data: { updatedAt: new Date(), ...update }
+      });
    };
 
    delete = async (userID: number, noteID: number) => {
