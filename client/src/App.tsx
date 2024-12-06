@@ -9,17 +9,12 @@ import NoteList from './pages/notes/NoteList';
 import UpsertNote from './pages/notes/UpsertNote';
 import Settings from './pages/settings/Settings';
 import Wrapper from './pages/wrapper';
-import { ErrorContextProvider } from './context';
 
 const router = createBrowserRouter(
    [
       {
          path: '/',
-         element: (
-            <ErrorContextProvider>
-               <Wrapper />
-            </ErrorContextProvider>
-         ),
+         element: <Wrapper />,
          handle: {
             crumb: () => 'Home'
          },

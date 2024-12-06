@@ -1,13 +1,18 @@
 import { Outlet } from 'react-router-dom';
-import Header from './components/Header';
-import Footer from './components/Footer';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import Breadcrumbs from '../../ui/Breadcrumbs';
-import { useContext } from 'react';
-import { ErrorContext } from '../../context';
 import Toast from '../../ui/Toast';
+import Footer from './components/Footer';
+import Header from './components/Header';
 
 const Wrapper = () => {
-   const { errorToasts, onToastClose } = useContext(ErrorContext);
+   const dispatch = useAppDispatch();
+   const errorToasts = useAppSelector(state => state.errorToasts);
+
+   const onToastClose = (id: number) => {
+      dispatch({ type: 'CLOSE_TOAST', payload: id });
+   };
+
    return (
       <div className="h-screen flex flex-col relative">
          <Header />

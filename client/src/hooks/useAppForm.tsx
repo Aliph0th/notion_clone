@@ -2,9 +2,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
 import { useForm } from 'react-hook-form';
+import { useAppDispatch } from '.';
 import { ApiError, AppFormHookParams } from '../types';
-import { useContext } from 'react';
-import { ErrorContext } from '../context';
 
 export const useAppForm = <T, K = unknown>({
    onSuccess,
@@ -24,9 +23,10 @@ export const useAppForm = <T, K = unknown>({
       defaultValues,
       reValidateMode: 'onChange'
    });
-   const { pushToast } = useContext(ErrorContext);
+   const dispatch = useAppDispatch();
 
-   const defaultError = (error: AxiosError<ApiError>) => pushToast(error?.response?.data?.message);
+   const defaultError = (error: AxiosError<ApiError>) =>
+      dispatch({ type: 'PUSH_TOAST', payload: error?.response?.data?.message });
    const mutation = useMutation({
       mutationFn,
       onError: onError || defaultError,

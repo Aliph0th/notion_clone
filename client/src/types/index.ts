@@ -61,9 +61,3 @@ export type AppFormHookParams<T, K> = {
    schema: z.Schema<unknown, unknown>;
    mutateDataIDs?: { userID?: number; noteID?: number };
 };
-
-export type ErrorContextType = {
-   errorToasts: ErrorToast[];
-   onToastClose: (_: number) => void;
-   pushToast: (_?: string) => void;
-};

@@ -1,3 +1,5 @@
+import { ErrorToast } from '../types';
+
 export const DEFAULT_AVATAR = 'https://raw.githubusercontent.com/mmf-web/react-features/refs/heads/main/pedro.gif';
 export const HEADER_LINKS = {
    Unauthenticated: [
@@ -27,3 +29,12 @@ export const QUERY_KEYS = {
    NOTE: 'note',
    USER: 'user'
 };
+
+export const DEFAULT_STATE = {
+   errorToasts: [] as ErrorToast[]
+};
+
+export const ACTIONS = {
+   CLOSE_TOAST: 'CLOSE_TOAST',
+   PUSH_TOAST: 'PUSH_TOAST'
+} as const;
