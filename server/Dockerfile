@@ -12,10 +12,7 @@ COPY --chown=node:node . .
 
 RUN npm run db:init && \
     npm run db:generate && \
-    chown node:node ./db/database.db && \
-    if [-f ./db/database.db-journal]; then \
-        chown node:node ./db/database.db-journal; \
-    fi
+    chown -R node:node ./db
 EXPOSE 3000
 
 RUN npm run build
